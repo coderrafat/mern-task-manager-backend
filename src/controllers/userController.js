@@ -49,12 +49,14 @@ exports.userLogincontroller = async (req, res, next) => {
         const result = await userLoginService(email, password)
 
         if (result.status === 'success') {
-            return res.cookie('token', result.token).status(200).json(result);
+            return res.cookie('token', result.token, {
+                maxAge: process.env.JWT_EXPIRES,
+                httpOnly: true
+            }).status(200).json(result);
 
         } else {
             return res.json({ error: "something went wrong" })
         }
-
 
     } catch (error) {
         next(error);
@@ -118,4 +120,4 @@ exports.userPasswordUpdateController = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};

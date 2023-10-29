@@ -136,7 +136,9 @@ exports.userLoginService = async (email, password) => {
         throw new ValidationError('Email or Password incorrect')
     }
 
-    const token = await createToken(user.email, user._id, '24h');
+    const token = await createToken(
+        user.email, user._id, process.env.JWT_EXPIRES
+    );
 
     return {
         status: 'success',
